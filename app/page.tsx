@@ -1,3 +1,4 @@
+"use client";
 // components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +26,39 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-export default function Home() {
+import { useState } from "react";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+const chartData = [
+  { month: "January", desktop: 186 },
+  { month: "February", desktop: 305 },
+  { month: "March", desktop: 237 },
+  { month: "April", desktop: 73 },
+  { month: "May", desktop: 209 },
+  { month: "June", desktop: 214 },
+];
+const chartConfig = {
+  desktop: {
+    label: "Desktop",
+    color: "var(--chart-1)",
+  },
+} satisfies ChartConfig;
+const Home = () => {
+  const [open, setOpen] = useState(false);
   return (
     <section className="h-full">
       <div className="h-full flex flex-col gap-4">
@@ -42,7 +75,7 @@ export default function Home() {
 
           <div className="flex gap-3">
             <ModeToggle />
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => setOpen(true)}>
               <BarChart2Icon />
               City Chart
             </Button>
@@ -191,6 +224,53 @@ export default function Home() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-6xl w-[95vw] h-[85vh] overflow-hidden">
+          <DialogHeader className="pt-6">
+            <DialogTitle>📊 Berlin — Bikes per Station</DialogTitle>
+            <DialogDescription>
+              Number of available bikes at each station, sorted highest first.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <ChartContainer config={chartConfig}>
+                <BarChart
+                  accessibilityLayer
+                  data={chartData}
+                  layout="vertical"
+                  margin={{
+                    left: -20,
+                  }}
+                >
+                  <XAxis type="number" dataKey="desktop" hide />
+                  <YAxis
+                    dataKey="month"
+                    type="category"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent hideLabel />}
+                  />
+                  <Bar
+                    dataKey="desktop"
+                    fill="var(--color-desktop)"
+                    radius={5}
+                  />
+                </BarChart>
+              </ChartContainer>
+            </ScrollArea>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
-}
+};
+
+export default Home;
