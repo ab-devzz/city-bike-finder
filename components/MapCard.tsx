@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import {
   Card,
   CardContent,
@@ -8,7 +8,21 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+const customIcon = new L.Icon({
+  iconUrl: "/icons/pin.png", // put your icon in /public/icons
+  iconSize: [32, 32],
+  iconAnchor: [16, 32], // tip of pin touches the lat/lon point
+});
+
+const locations = [
+  { id: 1, lat: 19.076, lon: 72.8777, label: "Mumbai" },
+  { id: 2, lat: 28.6139, lon: 77.209, label: "Delhi" },
+];
 const MapCard = () => {
   return (
     <>
@@ -29,11 +43,26 @@ const MapCard = () => {
 
         <CardContent className="p-0">
           <div className="h-[550px]">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1737.6221882978507!2d-98.48650795000005!3d29.421653200000023!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x865c58aa57e6a56f%3A0xf08a9ad66f03e879!2sHenry+B.+Gonzalez+Convention+Center!5e0!3m2!1sen!2sus!4v1393884854786"
-              width="100%"
-              height="680px"
-            ></iframe>
+            <MapContainer
+              center={[20.5937, 78.9629]}
+              zoom={5}
+              scrollWheelZoom={true}
+              style={{ height: "500px", width: "100%" }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; OpenStreetMap contributors"
+              />
+              {locations.map((loc) => (
+                <Marker
+                  key={loc.id}
+                  position={[loc.lat, loc.lon]}
+                  icon={customIcon}
+                >
+                  <Popup>{loc.label}</Popup>
+                </Marker>
+              ))}
+            </MapContainer>
           </div>
         </CardContent>
       </Card>

@@ -22,7 +22,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Header from "@/components/Header";
 import Searchbar from "@/components/Searchbar";
 import StatusCard from "@/components/StatusCard";
-import MapCard from "@/components/MapCard";
+// import MapCard from "@/components/MapCard";
 
 const chartData = [
   { month: "January", desktop: 186 },
@@ -38,6 +38,15 @@ const chartConfig = {
     color: "var(--chart-1)",
   },
 } satisfies ChartConfig;
+
+import dynamic from "next/dynamic";
+
+// Dynamically import MapCard and disable SSR
+const MapCard = dynamic(() => import("@/components/MapCard"), {
+  ssr: false,
+  loading: () => <div>Loading map...</div>,
+});
+
 const Home = () => {
   const [open, setOpen] = useState(false);
   return (
