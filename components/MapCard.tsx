@@ -39,16 +39,36 @@ const MapCard = () => {
     <>
       <Card className="overflow-hidden rounded-3xl">
         <CardHeader>
-          <div className="flex justify-between">
-            <div>
-              <CardTitle>Live Map</CardTitle>
+          <div className="flex flex-cols justify-between">
+            <div className="flex justify-between">
+              <div>
+                <CardTitle>Live Map</CardTitle>
 
-              <CardDescription>Available stations and vehicles</CardDescription>
+                <CardDescription>
+                  Available stations and vehicles
+                </CardDescription>
+              </div>
+
+              {/* <Button variant="ghost" size="icon">
+                <Expand />
+              </Button> */}
             </div>
+            {/* badges */}
+            <div className="flex items-center justify-center gap-10 py-2">
+              {/* <Card> */}
+              {/* <CardContent className="flex items-center justify-center gap-10 py-4"> */}
+              <Badge className="rounded-full">4+ Bikes</Badge>
 
-            <Button variant="ghost" size="icon">
-              {/* <Expand /> */}
-            </Button>
+              <Badge variant="secondary" className="rounded-full">
+                1–3 Bikes
+              </Badge>
+
+              <Badge variant="destructive" className="rounded-full">
+                No Bikes
+              </Badge>
+            </div>
+            {/* </CardContent> */}
+            {/* </Card> */}
           </div>
         </CardHeader>
 
@@ -151,7 +171,7 @@ const MapCard = () => {
               </Card>
             </HoverCardContent>
           </HoverCard>
-          <div className="h-[550px]">
+          <div className="h-[500px]">
             <MapContainer
               center={[20.5937, 78.9629]}
               zoom={5}
@@ -183,21 +203,6 @@ const MapCard = () => {
               ))}
             </MapContainer>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* badges */}
-      <Card>
-        <CardContent className="flex items-center justify-center gap-10 py-4">
-          <Badge className="rounded-full">4+ Bikes</Badge>
-
-          <Badge variant="secondary" className="rounded-full">
-            1–3 Bikes
-          </Badge>
-
-          <Badge variant="destructive" className="rounded-full">
-            No Bikes
-          </Badge>
         </CardContent>
       </Card>
     </>
